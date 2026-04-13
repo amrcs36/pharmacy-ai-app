@@ -384,7 +384,7 @@ with tab2:
                     'details': f'Image: {uploaded_file.name}'
                 })
                 
-try:
+                try:
                     # قراءة النص من الصورة فعلياً
                     st.info("⏳ جاري تحليل الروشتة واستخراج النص...")
                     extracted_text = pytesseract.image_to_string(image)
