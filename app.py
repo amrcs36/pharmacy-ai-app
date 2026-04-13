@@ -164,7 +164,8 @@ with tab1:
         st.subheader("Select Medications")
         
         # Get all drugs from database
-        c = conn.cursor()
+        conn = sqlite3.connect('pharmacy.db', check_same_thread=False)
+c = conn.cursor()
         c.execute("SELECT name FROM drugs ORDER BY name")
         all_drugs = [row[0] for row in c.fetchall()]
         
