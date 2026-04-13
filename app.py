@@ -6,7 +6,7 @@ import base64
 from PIL import Image
 import io
 import re
-
+import pytesseract
 # Page configuration
 st.set_page_config(
     page_title="AI Pharmacy Assistant",
@@ -384,13 +384,19 @@ with tab2:
                     'details': f'Image: {uploaded_file.name}'
                 })
                 
-                st.info("📝 OCR extraction would use Tesseract.js in production. For demo, showing placeholder extraction.")
-                st.text_area(
-                    "Extracted Text:",
-                    value="[OCR would extract prescription text here]\nExample: Aspirin 500mg BID\nMetformin 500mg TID",
-                    height=100,
-                    disabled=True
-                )
+try:
+                    # قراءة النص من الصورة فعلياً
+                    st.info("⏳ جاري تحليل الروشتة واستخراج النص...")
+                    extracted_text = pytesseract.image_to_string(image)
+                    
+                    if extracted_text.strip() == "":
+                        st.warning("⚠️ لم يتمكن البرنامج من قراءة النص بوضوح. حاول رفع صورة بإضاءة أفضل.")
+                    else:
+                        st.success("✅ تم استخراج النص بنجاح!")
+                        st.text_area("Extracted Text:", value=extracted_text, height=150)
+                        
+                except Exception as e:
+                    st.error("⚠️ حدث خطأ: محرك Tesseract غير مثبت أو غير متصل.")
 
 # ============ TAB 3: Drug Database ============
 with tab3:
