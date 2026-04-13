@@ -63,7 +63,7 @@ st.markdown("""
 # Initialize database
 def init_db():
     """Initialize SQLite database with drug information."""
-    conn = sqlite3.connect(':memory:')
+    conn = sqlite3.connect(':memory:', check_same_thread=False)
     c = conn.cursor()
     
     # Create drug database
@@ -164,7 +164,6 @@ with tab1:
         st.subheader("Select Medications")
         
         # Get all drugs from database
-        conn = sqlite3.connect('pharmacy.db', check_same_thread=False)
         c = conn.cursor()
         c.execute("SELECT name FROM drugs ORDER BY name")
         all_drugs = [row[0] for row in c.fetchall()]
